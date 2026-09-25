@@ -1,0 +1,12 @@
+# Game data (downloaded or generated; rebuild with fetch_replays.py / tapes.py)
+replays/
+tapes/
+summaries/
+ours/
+results/
+submission/
+
+# Scratch work and caches
+agents/scratch_*/
+__pycache__/
+*.pyc
