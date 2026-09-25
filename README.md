@@ -27,6 +27,7 @@ top-level `agent(obs, config)` (Kaggle runs the last callable in the file).
 | `tapes.py` | Turns downloaded top-player replays into replayable action tapes (`python tapes.py build`). |
 | `panel.py` | Candidate vs frozen top-player tapes on their original seeds. |
 | `panel2.py`, `cmp.py` | Low-noise panel (common random numbers) and paired comparison of two runs. |
+| `h2h.py` | Paired head-to-head vs reactive agents in both seats (common random numbers); `--cmp A.json B.json` compares two runs. |
 | `ledger.py` | Exact per-product revenue/cost ledger of a game. |
 | `validate.py` | Loads a file the way Kaggle does, plays full games, checks errors and timing. |
 | `prep_submit.py` | Static checks plus an official-engine smoke test in an empty directory; writes `submission/main.py`. |
