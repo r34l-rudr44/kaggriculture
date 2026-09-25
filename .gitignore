@@ -10,3 +10,4 @@ submission/
 agents/scratch_*/
 __pycache__/
 *.pyc
+external/

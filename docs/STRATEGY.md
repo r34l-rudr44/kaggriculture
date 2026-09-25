@@ -228,7 +228,7 @@ Empty or weed tiles from D12 on: 2-10 on average for top agents; ours is 17-23.
 
 ### 2.10 Market tactics
 - **Selling:** top agents sell nearly everything within a day of production, in chunks. They do not hoard.
-  - Holding premium goods for a better price cost the public tape bot 7.5-34k per game, and Majkel lost 113210740 by $262 after hoarding 47-53 strawberries and dumping 33 at $15.
+  - Holding premium goods for a better price backfires: Majkel lost 113210740 by $262 after hoarding 47-53 strawberries and dumping 33 at $15.
   - They **do** pause selling when a premium good is past I0 (a glut) and the town is draining it. M&M paused wool at $192 and resumed at $238-240.
   - At depressed prices they sell only 1-2 per shop tick: Vadim's wool averaged $127 while the market sat at $31-61.
 - **Melons:** sell all on D10-11 as they are harvested. The first seller gets $238-272; later sellers get $137-170.
@@ -254,15 +254,15 @@ Empty or weed tiles from D12 on: 2-10 on average for top agents; ours is 17-23.
 | Question | Evidence for | Evidence against | Resolution |
 |---|---|---|---|
 | Buy SE ($4000)? | Vadim +15.6k vs his clone without SE (113207221); MG +9.9k vs clone Arda (no SE); SE owners won 3/4 in DECEM's games; 7 of the top-13 buy it | Boey never buys SE and won all 4; two SE buyers lost to Boey by 5.6k/8.0k (they also had fewer geese and less fertilizer) | **Default: buy SE on D10-D11** if cash ≥ 4000 + reserve after the melon sale, ≥ 20 SE tiles have a planned use, and the labor budget allows. Otherwise skip. A/B test it. |
-| Opening herd | 2C+3S used by MG, DECEM, Vadim, Densike, 吃白饭, mtmr, TheEggman, DSM (52/102 games); the bigger D6 wool check pays for NE | 3C+2S used by Boey (rank 1), TFC, FQ | Default 2C+3S (majority, exact tape available); 3C+2S as an A/B. The public-notebook claim that "cow / 4-hire openings lose" is contradicted by the replays. |
+| Opening herd | 2C+3S used by MG, DECEM, Vadim, Densike, 吃白饭, mtmr, TheEggman, DSM (52/102 games); the bigger D6 wool check pays for NE | 3C+2S used by Boey (rank 1), TFC, FQ | Default 2C+3S (majority, exact tape available); 3C+2S as an A/B. |
 | Melon count | 10 is the modal count; 13 vs 10 gave MG +2.3k; 17 vs 10 gave mtmr +4.2k | 18 each in self-play → 108 sold at $137 and about 22 per player at $1 | **Adaptive 8-12:** total = clamp(21 - opponent D0 melon count, 8, 12), bought on D1. Combined supply of about 120-130 units keeps the marginal price near or above $100. |
-| Hold vs sell | MMPQ's last-day stockpile; M&M pausing wool; holding milk on cows | Public tape bot lost 7.5-34k by holding; Majkel dumped at $15 | Sell by default. Hold **only** when the price is below its floor **and** the estimated drift (town demand minus rival sales) is positive, and only up to shed limits. Stock accumulates naturally in the last days; don't build it deliberately. |
+| Hold vs sell | MMPQ's last-day stockpile; M&M pausing wool; holding milk on cows | Majkel dumped at $15 after holding | Sell by default. Hold **only** when the price is below its floor **and** the estimated drift (town demand minus rival sales) is positive, and only up to shed limits. Stock accumulates naturally in the last days; don't build it deliberately. |
 | Fertilizer on wheat | Boey, MG, MMPQ: 60-124 wheat fertilizations per game | Gap analyst: "never on wheat" | Sell on D1-D9 (price $78-100 > 2 wheat). Later, use on wheat age 2 when fertilizer price < 2 × wheat price and strawberry/tomato needs for the next 3 days are covered. |
 | Wheat harvest age | Boey age 3, 5 units (1.67/tile-day) | MMPQ and IsaiahP age 4, 6 units | Age 3 while tiles are scarce (D6-D24); age 4 is allowed when the labor budget is tight (1.75 vs 2.0 actions/tile-day). |
-| Tomatoes | 5 of 12 analysts: minor (top-13 mean 6.1k) | Public notebook: "biggest hole" (winners sell ~71 at ~$114); mtmr +15.8k with pizza + farmers market | Conditional program: only with PIZZA/FM demand, 5 plants per such shop (cap 15), while the tomato price is ≥ $70 or inventory is below I0-100. |
+| Tomatoes | 5 of 12 analysts: minor (top-13 mean 6.1k) | mtmr +15.8k with pizza + farmers market; tomatoes nobody else sells reach $114+ on the hinge curve | Conditional program: only with PIZZA/FM demand, 5 plants per such shop (cap 15), while the tomato price is ≥ $70 or inventory is below I0-100. |
 | Geese | MMPQ wins with 11-15 geese (brunch/bakery) | FQ uses none; our 14-19 uncared geese are a sink | Geese only with BAKERY/BRUNCH demand and eggs ≥ $48, always FULL. Cap 3 × (BAKERY+BRUNCH), max 12. |
 | 12 vs 13 units | MG and mtmr run 13 | Boey and DECEM run 11-12 | Size to the day's work each day, with a hard cap of 13 units. |
-| Seat asymmetry in self-play (13%) | market-micro: 77.5k vs 67.6k | Public notebook: a seat swap replays the same game | Evaluate on ≥ 40 seeds × both seats, with paired comparisons. Never trust a single game. |
+| Seat asymmetry in self-play (13%) | market-micro: 77.5k vs 67.6k | A seat swap often replays nearly the same game (deterministic engine) | Evaluate on ≥ 40 seeds × both seats, with paired comparisons. Never trust a single game. |
 
 ---
 
@@ -273,7 +273,7 @@ Worth implementing, in order of value:
 2. **Same-turn sequencing.** Sells go first in the list, so HIRE, BUY_LAND and BUY_ANIMAL at later slots can spend the proceeds. DROP and SELL in the same step. Buy seeds exactly 1 step before PLANT.
 3. **Slot priority on contested steep sells.** Order sells by `(price(inv) - price(inv+n))`, descending. This matters for WOOL (+286 per game front vs back), MILK (+139), STRAWBERRY (+133) and MELON (+49). Never split one product across slots.
 4. **Race detection.** Estimate what the rival sold each step: `rival_sold = (inv_t - inv_{t-1}) + town_draw(step_{t-1}) - own_sold_{t-1}` for products the rival can't buy (all except wheat and fertilizer; count only units sold above $1). If the rival starts selling a premium product and its price is still ≥ base, sell ours now. This matters most for the D6 wool, D8 milk and D10 melon batches.
-5. **Demand denial.** Every premium unit we sell before the glut is one the rival sells lower. Skipping D11 strawberries when no berry shop was open cost the tape bot 1.5k, because the rival sold them instead.
+5. **Demand denial.** Every premium unit we sell before the glut is one the rival sells lower; units we skip are sold by the rival instead.
 6. **Watching the opponent.** `farms[opp].tiles` is public. Count its melons (to size ours on D1), strawberry and tomato tiles, and each animal type. Two players building the same 12-cow / 36-strawberry engine crashed milk to $45 and strawberries to $5 (113209485); the winner came from the pivots.
 7. **Fertilizer arbitrage over time.** Its price only falls, so sell early and buy back late at ≤ $12 for strawberry and tomato applications.
 8. **Animals as storage.** Cows can hold 2 productions; products stay on the animal while the price is depressed.

@@ -13,11 +13,9 @@ def load_agent(path, params=None):
     spec = importlib.util.spec_from_file_location(name, os.path.abspath(path))
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    if hasattr(mod, "make_agent"):
-        try:
-            return mod.make_agent(params) if params else mod.make_agent()
-        except TypeError:
-            return mod.make_agent()
+    if params:
+        return mod.make_agent(params)
+    # Kaggle's rule: the last callable defined in the module is the agent.
     fns = [v for v in vars(mod).values() if callable(v)]
     return fns[-1]
 
