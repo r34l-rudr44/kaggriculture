@@ -9,7 +9,8 @@ most coins after 720 turns wins.
 
 | File | Description |
 |---|---|
-| `agents/v6.py` | Current best. `v5_script` plus midnight overflow couriers, retuned demand model, rival-sales tracking with race selling, order-book optimization of premium sales, premium rush. |
+| `agents/v7.py` | Current best. `v6` plus a ring layout opening with cash-sized day-0 orders, melon race priority, a day-by-day strawberry market forecast for planting, and a day-1 melon top-up. |
+| `agents/v6.py` | Previous best. `v5_script` plus midnight overflow couriers, retuned demand model, rival-sales tracking with race selling, order-book optimization of premium sales, premium rush. |
 | `agents/v5_script.py` | Scripted all-in opening (2 cows + 3 sheep around the shed, care from day 0), state-driven days 1-10, demand-sized strawberries/tomatoes, shop-driven herd, burst job engine. |
 | `agents/v5_planner.py` | Alternative design: per-tile action calendars, labor planner, value-based router. |
 | `agents/v5_evolve.py` | Alternative design evolved from v4. |
