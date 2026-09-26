@@ -9,8 +9,9 @@ most coins after 720 turns wins.
 
 | File | Description |
 |---|---|
-| `agents/v7.py` | Current best. `v6` plus a ring layout opening with cash-sized day-0 orders, melon race priority, a day-by-day strawberry market forecast for planting, and a day-1 melon top-up. |
-| `agents/v6.py` | Previous best. `v5_script` plus midnight overflow couriers, retuned demand model, rival-sales tracking with race selling, order-book optimization of premium sales, premium rush. |
+| `agents/v8.py` | Current best. A day-by-day market model of every product (town demand, both farms' visible pipelines, rival stock) drives herd size, a second melon crop and sale timing; the full hiring schedule runs through day 27; the last day uses a coin-valued sweep and a timed final sale. |
+| `agents/v7.py` | Previous best. `v6` plus a ring layout opening with cash-sized day-0 orders, melon race priority, a day-by-day strawberry market forecast for planting, and a day-1 melon top-up. |
+| `agents/v6.py` | Earlier version. `v5_script` plus midnight overflow couriers, retuned demand model, rival-sales tracking with race selling, order-book optimization of premium sales, premium rush. |
 | `agents/v5_script.py` | Scripted all-in opening (2 cows + 3 sheep around the shed, care from day 0), state-driven days 1-10, demand-sized strawberries/tomatoes, shop-driven herd, burst job engine. |
 | `agents/v5_planner.py` | Alternative design: per-tile action calendars, labor planner, value-based router. |
 | `agents/v5_evolve.py` | Alternative design evolved from v4. |
@@ -31,6 +32,8 @@ top-level `agent(obs, config)` (Kaggle runs the last callable in the file).
 | `h2h.py` | Paired head-to-head vs reactive agents in both seats (common random numbers); `--cmp A.json B.json` compares two runs. |
 | `ledger.py` | Exact per-product revenue/cost ledger of a game. |
 | `validate.py` | Loads a file the way Kaggle does, plays full games, checks errors and timing. |
+| `gate.py` | Blind promotion gate on sealed holdout seeds (strong opponent, our ladder opponents, top-20 tapes, duel) with a pre-registered rule. |
+| `fetch_ladder.py` | Downloads our recent ladder games to build the ladder-opponent suite (`ladder_set.json`). |
 | `prep_submit.py` | Static checks plus an official-engine smoke test in an empty directory; writes `submission/main.py`. |
 | `fetch_replays.py`, `summarize_replay.py` | Download top-player replays (Kaggle CLI) and condense them into per-day summaries. |
 

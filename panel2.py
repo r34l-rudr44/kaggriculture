@@ -1,6 +1,8 @@
 """Low-variance A/B panel (evaluation-only engine patch, does not modify any project file).
 
-python panel2.py agents/CAND.py [--params JSON] [--K 1] [--crn 1] [--limit N] [--workers 3] [--tag name]
+python panel2.py agents/CAND.py [--params JSON] [--K 1] [--crn 1] [--limit N] [--workers 3] [--tag name] [--ladder]
+  --ladder: also play the tapes listed in ladder_set.json. They are left out by default because gate.py
+            scores them as held-out evidence, so tuning on them would leak into the gate.
   --crn 1 : weed spawning uses its own RNG stream, so the town shop sequence depends only on
             (seed, day) and is identical for every candidate variant (common random numbers).
   --K k   : play each tape seat on k seeds (original seed + k-1 derived seeds).
@@ -58,9 +60,14 @@ def main():
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--tag", default=None)
+    ap.add_argument("--ladder", action="store_true")
     a = ap.parse_args()
     params = json.loads(a.params) if a.params else None
     eps = sorted(os.path.basename(f)[:-5] for f in glob.glob(os.path.join(ROOT, "tapes", "*.json")))
+    ladder_file = os.path.join(ROOT, "ladder_set.json")
+    if not a.ladder and os.path.exists(ladder_file):
+        held_out = set(json.load(open(ladder_file)))
+        eps = [ep for ep in eps if ep not in held_out]
     if a.limit:
         eps = eps[: a.limit]
     jobs = [(os.path.abspath(a.cand), ep, s, k, params, a.crn) for ep in eps for s in (0, 1) for k in range(a.K)]
